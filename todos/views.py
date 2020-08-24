@@ -1,10 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Todo, Priority
 
 
 def main(request):
-    latest_todo_list = Todo.objects.order_by('-creation_date')[:5]
+    latest_todo_list = Todo.objects.order_by('-prio', 'creation_date')
     context = {
         'latest_todo_list': latest_todo_list,
     }
@@ -20,13 +20,12 @@ def priority(request, todo_id):
     return HttpResponse("You're looking at priority of todo {}".format(todo_id))
 
 
-def rank(request, todo_id):
+def update(request, todo_id):
     todo = get_object_or_404(Todo, pk=todo_id)
-    try:
-        selected_priority = todo.priority_set.get(pk=request.POST['priority'])
-    except (KeyError, Priority.DoesNotExist):
-        return render(request, 'todos/detail.html', {'todo': todo, 'error_message': "Didn't select a Prio"})
-    else:
-        selected_priority += 1
-        selected_priority.save()
-        return HttpResponseRedirect(reversed('todos:details', args=(todo.id)))
+    todo.job_rank = request.POST['job_rank']
+    todo.imp_rank = request.POST['imp_rank']
+    todo.prio = int(3 * int(request.POST['job_rank']) +
+                    2 * int(request.POST['imp_rank']))
+    todo.todo_text = request.POST['todo_text']
+    todo.save()
+    return redirect('/todos/')

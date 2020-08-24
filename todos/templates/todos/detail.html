@@ -8,24 +8,26 @@
 </head>
 
 <body>
-    <h1>Todo Detail View</h1>
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-    <h3>Current todo: "{{ todo }}"</h3>
 
-    <form action="{% url 'todos:rank' todo.id %}" method="post">
+    <form action="{% url 'todos:update' todo.id %}" method="post">
         {% csrf_token %}
-        {% for prio in todo.priority_set.all %}
-        <input type="radio" name="prio" id="priority{{ forloop.counter }}" value="{{ priority.id }}">
-        <label for="priority{{ forloop.counter }}">{{ priority.prio }}</label><br>
-        {% endfor %}
-        <input type="submit" value="Rank">
+        <h1>Todo Detail View</h1>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        <div>
+            <h3>Current todo:
+                <input type="text" name="todo_text" id="todo_text" value="{{todo.todo_text}}"><br>
+            </h3>
+            <button>Edit</button>
+            Created on: {{ todo.creation_date }}
+        </div>
+        <label for="job-rank">Job Rank:</label><br>
+        <input type="number" name="job_rank" id="job-rank" value="{{todo.job_rank}}"><br>
+        <label for="imp-rank">Importance Rank:</label><br>
+        <input type="number" name="imp_rank" id="imp-rank" value="{{todo.imp_rank}}"><br>
+        Prio: {{ todo.prio }} <br>
+        <input type="submit" value="Update">
     </form>
 
-    <ul>
-        {% for prio in todo.priority_set.all %}
-        <li>{{prio}}</li>
-        {% endfor %}
-    </ul>
 </body>
 
 </html>

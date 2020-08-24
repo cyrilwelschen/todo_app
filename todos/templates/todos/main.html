@@ -5,15 +5,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
 </head>
 
 <body>
+
+
+
     {% if latest_todo_list %}
-    <ul>
+    <table>
+        <tr>
+            <th>Weight</th>
+            <th>Todo</th>
+            <th>Job Rank</th>
+            <th>Importance Rank</th>
+        </tr>
         {% for todo in latest_todo_list %}
-        <li><a href="{% url 'todos:detail' todo.id %}">{{ todo.todo_text }}</a></li>
+        <tr>
+            <td>{{ todo.prio }}</td>
+            <td><a href="{% url 'todos:detail' todo.id %}">{{ todo.todo_text }}</a></td>
+            <td>{{ todo.job_rank }}</td>
+            <td>{{ todo.imp_rank }}</td>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
+
     {% else %}
     <p>No polls are available.</p>
     {% endif %}

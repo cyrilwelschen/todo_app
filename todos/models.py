@@ -6,6 +6,9 @@ from django.utils import timezone
 
 class Todo(models.Model):
     todo_text = models.CharField(max_length=500)
+    job_rank = models.IntegerField(default=0)
+    imp_rank = models.IntegerField(default=0)
+    prio = models.IntegerField(default=0)
     creation_date = models.DateTimeField('date created')
 
     def __str__(self):
