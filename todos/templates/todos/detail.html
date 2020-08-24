@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Todo Detail View</h1>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <h3>Current todo: "{{ todo }}"</h3>
+
+    <form action="{% url 'todos:rank' todo.id %}" method="post">
+        {% csrf_token %}
+        {% for prio in todo.priority_set.all %}
+        <input type="radio" name="prio" id="priority{{ forloop.counter }}" value="{{ priority.id }}">
+        <label for="priority{{ forloop.counter }}">{{ priority.prio }}</label><br>
+        {% endfor %}
+        <input type="submit" value="Rank">
+    </form>
+
+    <ul>
+        {% for prio in todo.priority_set.all %}
+        <li>{{prio}}</li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
