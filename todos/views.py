@@ -1,14 +1,28 @@
+import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Todo, Priority
+from .forms import TodoForm
 
 
 def main(request):
-    latest_todo_list = Todo.objects.order_by('-prio', 'creation_date')
-    context = {
-        'latest_todo_list': latest_todo_list,
-    }
-    return render(request, 'todos/main.html', context)
+    if request.POST:
+        print("Got Post request on Main")
+        todo = Todo()
+        todo.job_rank = request.POST['job_rank']
+        todo.imp_rank = request.POST['imp_rank']
+        todo.prio = int(3 * int(request.POST['job_rank']) +
+                        2 * int(request.POST['imp_rank']))
+        todo.todo_text = request.POST['todo_text']
+        todo.creation_date = datetime.datetime.now()
+        todo.save()
+        return redirect('/todos/')
+    else:
+        latest_todo_list = Todo.objects.order_by('-prio', 'creation_date')
+        context = {
+            'latest_todo_list': latest_todo_list,
+        }
+        return render(request, 'todos/main.html', context)
 
 
 def detail(request, todo_id):
@@ -29,3 +43,13 @@ def update(request, todo_id):
     todo.todo_text = request.POST['todo_text']
     todo.save()
     return redirect('/todos/')
+
+
+def create(request):
+    form = TodoForm(request.POST or None)
+
+    if form.is_valid():
+        form.save()
+        return redirect('/todos/')
+
+    return render(request, 'todos/todo-form.html', {'form': form})
