@@ -23,6 +23,15 @@
             width: 50%;
         }
 
+        input[type="submit"] {
+            background-color: lightgreen;
+            border: 1px solid black;
+            border-radius: 4px;
+            padding: 3px 10px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
         .rank-group {
             padding: 5px;
             padding-bottom: 20px;
@@ -41,8 +50,12 @@
         td,
         th {
             border: 1px solid #a4ebed;
-            text-align: left;
+            text-align: center;
             padding: 8px;
+        }
+
+        .tab-col-todo-text {
+            text-align: left;
         }
 
         tr:nth-child(even) {
@@ -60,15 +73,15 @@
 
     <h1>Todos</h1>
 
-    <form action="{% url 'todos:main' %}" method="post">
+    <form action="{% url 'todos:main' %}" method="post" autocomplete="off">
         {% csrf_token %}
         <div class="rank-group">
-            <input type="text" name="todo_text" id="todo_text" autofocus placeholder="Next Todo...">
+            <input type="text" name="todo_text" id="todo_text" placeholder="Enter Todo...">
             <label for="job-rank">Job Rank:</label>
             <input type="range" min=1 max=5 name="job_rank" id="job-rank">
             <label for="imp-rank">Importance Rank:</label>
             <input type="range" min=1 max=5 name="imp_rank" id="imp-rank">
-            <input type="submit" value="Add Todo">
+            <input type="submit" value="Add Todo" style="background: lightblue">
         </div>
     </form>
 
@@ -79,19 +92,23 @@
             <th>Todo</th>
             <th>J</th>
             <th>I</th>
+            <th>C [days]</th>
         </tr>
         {% for todo in latest_todo_list %}
         <tr>
             <td>{{ todo.prio }}</td>
             <form action="{% url 'todos:delete' todo.id %}" method="post">
                 {% csrf_token %}
-                <td>
+                <td class="tab-col-todo-text">
+                    <input type="submit" value="Done" style="float: left;">
                     <a href="{% url 'todos:detail' todo.id %}">{{ todo.todo_text }}</a>
-                    <input type="submit" value="Done" style="float: right;">
                 </td>
             </form>
             <td>{{ todo.job_rank }}</td>
             <td>{{ todo.imp_rank }}</td>
+            <td style="width: 150px;">
+                <p style="padding: 0px; margin: 0px" id="todo-{{todo.id}}"></p>
+            </td>
         </tr>
         {% endfor %}
     </table>
@@ -100,5 +117,23 @@
     <p>No polls are available.</p>
     {% endif %}
 </body>
+
+<script>
+    window.onload = test;
+    function test() {
+        {% for todo in latest_todo_list %}
+        var para = document.getElementById("todo-" + {{ todo.id }});
+    console.log("{{todo.creation_date}}");
+    var day = "{{todo.creation_date.day}}";
+    var month = "{{todo.creation_date.month}}";
+    var year = "{{todo.creation_date.year}}";
+    var creationDate = new Date(year, month - 1, day);
+    var now = new Date();
+    var timeDiff = Math.abs(creationDate - now);
+    var dayDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    para.innerHTML = dayDiff - 1;
+    {% endfor %}
+    }
+</script>
 
 </html>
