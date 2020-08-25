@@ -38,10 +38,8 @@
 
     <form action="{% url 'todos:main' %}" method="post">
         {% csrf_token %}
-        <h1>Todo Create</h1>
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         <div>
-            <h3>Current todo:
+            <h3>Create new Todo:
                 <input type="text" name="todo_text" id="todo_text"><br>
             </h3>
         </div>
@@ -55,10 +53,10 @@
     {% if latest_todo_list %}
     <table>
         <tr>
-            <th>Weight</th>
+            <th>W</th>
             <th>Todo</th>
-            <th>Job Rank</th>
-            <th>Importance Rank</th>
+            <th>J</th>
+            <th>I</th>
         </tr>
         {% for todo in latest_todo_list %}
         <tr>
