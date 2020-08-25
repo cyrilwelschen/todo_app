@@ -83,7 +83,13 @@
         {% for todo in latest_todo_list %}
         <tr>
             <td>{{ todo.prio }}</td>
-            <td><a href="{% url 'todos:detail' todo.id %}">{{ todo.todo_text }}</a></td>
+            <form action="{% url 'todos:delete' todo.id %}" method="post">
+                {% csrf_token %}
+                <td>
+                    <a href="{% url 'todos:detail' todo.id %}">{{ todo.todo_text }}</a>
+                    <input type="submit" value="Done" style="float: right;">
+                </td>
+            </form>
             <td>{{ todo.job_rank }}</td>
             <td>{{ todo.imp_rank }}</td>
         </tr>

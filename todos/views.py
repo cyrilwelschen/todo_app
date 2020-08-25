@@ -33,6 +33,12 @@ def priority(request, todo_id):
     return HttpResponse("You're looking at priority of todo {}".format(todo_id))
 
 
+def delete(request, todo_id):
+    todo = get_object_or_404(Todo, pk=todo_id)
+    todo.delete()
+    return redirect('/todos/')
+
+
 def update(request, todo_id):
     todo = get_object_or_404(Todo, pk=todo_id)
     todo.job_rank = request.POST['job_rank']
