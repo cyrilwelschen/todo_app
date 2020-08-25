@@ -11,21 +11,24 @@
             padding-left: 10%;
             padding-right: 10%;
             text-align: center;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #f2ffff;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            color: #ddfff7;
+            background: #394c53;
             font-size: 16px;
         }
 
         input[type="text"] {
             font-size: 22px;
             text-align: center;
-            border: 2px lightblue solid;
+            border: 2px solid;
             width: 50%;
+            background: #eef4ed;
         }
 
         input[type="submit"] {
             background-color: lightgreen;
-            border: 1px solid black;
+            color: #00120b;
+            border: 1px solid #00120b;
             border-radius: 4px;
             padding: 3px 10px;
             margin-right: 10px;
@@ -42,14 +45,13 @@
         }
 
         table {
-            font-family: arial, sans-serif;
             border-collapse: collapse;
             width: 100%;
         }
 
         td,
         th {
-            border: 1px solid #a4ebed;
+            border: 1px solid #00120b;
             text-align: center;
             padding: 8px;
         }
@@ -59,11 +61,16 @@
         }
 
         tr:nth-child(even) {
-            background-color: #c4fdff;
+            background-color: #556f7a;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #678592;
         }
 
         a {
             text-decoration: none;
+            color: #ddfff7;
             font-weight: bold;
         }
     </style>
@@ -71,7 +78,7 @@
 
 <body>
 
-    <h1>Todos</h1>
+    <h1 style="font-size: 55px;">Todos</h1>
 
     <form action="{% url 'todos:main' %}" method="post" autocomplete="off">
         {% csrf_token %}
@@ -81,7 +88,7 @@
             <input type="range" min=1 max=5 name="job_rank" id="job-rank">
             <label for="imp-rank">Importance Rank:</label>
             <input type="range" min=1 max=5 name="imp_rank" id="imp-rank">
-            <input type="submit" value="Add Todo" style="background: lightblue">
+            <input type="submit" value="Add Todo">
         </div>
     </form>
 
