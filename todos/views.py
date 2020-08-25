@@ -2,7 +2,6 @@ import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Todo, Priority
-from .forms import TodoForm
 
 
 def main(request):
@@ -43,13 +42,3 @@ def update(request, todo_id):
     todo.todo_text = request.POST['todo_text']
     todo.save()
     return redirect('/todos/')
-
-
-def create(request):
-    form = TodoForm(request.POST or None)
-
-    if form.is_valid():
-        form.save()
-        return redirect('/todos/')
-
-    return render(request, 'todos/todo-form.html', {'form': form})
